@@ -1,0 +1,19 @@
+{
+  "name": "realtimecodeeditor",
+  "version": "1.0.0",
+  "description": "Platform where users can code real time",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start" : "node backend/index.js",
+    "dev" : "nodemon backend/index.js"
+  },
+  "author": "Sibu Chanda",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "socket.io": "^4.8.1"
+  }
+}
