@@ -2,8 +2,10 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import socketHandler from './socket/index.js';
+import userRoute from './routes/user.js'
 
 const PORT = process.env.PORT || 8000;
+
 
 const app = express();
 const server = http.createServer(app);
@@ -13,6 +15,8 @@ const io = new Server(server, {
     origin: '*',
   },
 });
+
+app.use("/user",userRoute);
 
 socketHandler(io);
 
