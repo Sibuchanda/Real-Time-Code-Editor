@@ -11,15 +11,14 @@ function Login() {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        'http://localhost:8000/login',
+        'http://localhost:8000/user/login',
         { email, password },
         { withCredentials: true, headers: { 'Content-Type': 'application/json' } }
       );
 
       if (data.user) {
-        localStorage.setItem('username', data.user.username);
         toast.success(data.message || "User login successful");
-        window.location.href = "/dashboard";
+        window.location.href = "/test";
       } else {
         throw new Error("Token not found in response");
       }

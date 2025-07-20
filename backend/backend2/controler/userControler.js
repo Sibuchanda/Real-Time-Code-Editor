@@ -93,11 +93,12 @@ export const login = async (req, res) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(400).json({ errors: "Invalid user details" });
     }
-    const token = await generateToken(user._id, res);
-    res.status(200).json({
-      message: "User logged in successfully",
-      user: { username: user.username, token },
-    });
+    // const token = await generateToken(user._id, res);
+    // res.status(200).json({
+    //   message: "User logged in successfully",
+    //   user: { username: user.username, token },
+    // });
+    return res.status(200).json({message: "User Logged in successfully", user: { username: user.username}});
   } catch (err) {
     console.log(err);
     res.status(400).json({ message: "Error occurred during UserLogin" });
