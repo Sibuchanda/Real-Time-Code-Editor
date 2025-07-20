@@ -2,6 +2,8 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Signup from "./auth/Signup";
 import Login from "./auth/login";
+import Verifyotp from './auth/Verifyotp';
+import { Test } from "./dashboard/Test";
 
 
 import { ToastContainer } from "react-toastify";
@@ -20,6 +22,14 @@ function App() {
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/verifyotp",
+      element: <Verifyotp />,
+    },
+    {
+      path: "/test",
+      element: <Test />,
     },
   ]);
 

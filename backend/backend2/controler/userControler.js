@@ -1,6 +1,7 @@
 import User from "../model/user.js";
 import { z } from "zod";
 import bcrypt from "bcrypt";
+import redisClient from "../config/redis.js";
 import otpSender from "./otpSender.js";
 
 //---------------- Validating User Schema using 'Zod'-----------
@@ -52,31 +53,30 @@ export const signup = async (req, res) => {
         return res.status(400).json({ errors: ["User already registered"] });
       }
 
+      const hashPassword = await bcrypt.hash(password, 10);
+      const tempUserData = JSON.stringify({
+        username,
+        email,
+        password: hashPassword,
+      });
+      await redisClient.set(`temp-user:${email}`, tempUserData, { EX: 300 }); // store for 5 minutes
+
       //---Generating OTP and Sending ----
       const otpResult = await otpSender(email);
       if (!otpResult.success) {
-        return res.status(500).json({ errors: ["OTP sending failed. Please try again."] });
-      }
-
-      const hashPassword = await bcrypt.hash(password, 10);
-      const newUser = new User({ username, email, password: hashPassword });
-      await newUser.save();
-
-      if (newUser) {
         return res
-          .status(201)
-          .json({ message: "User registered sucessfully", newUser });
+          .status(500)
+          .json({ errors: ["OTP sending failed. Please try again."] });
       }
-    } else {
       return res
-        .status(400)
-        .json({ errors: ["Password and Confirm Password should be same"] });
+        .status(200)
+        .json({ message: "OTP sent to your email. Please verify." });
     }
   } catch (err) {
     console.log(err);
     return res
       .status(500)
-      .json({ errors: ["Error occured during User Register"] });
+      .json({ errors: ["Something went wrong during signup."] });
   }
 };
 

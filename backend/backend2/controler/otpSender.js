@@ -1,6 +1,8 @@
 import redis from "../config/redis.js";
 import { sendMail } from "../utils/emailSender.js";
 
+
+// --- Send OTP First Time ----
 const otpSender = async (email) => {
   const otp = Math.floor(100000 + Math.random() * 900000);
   try {
@@ -27,3 +29,4 @@ const otpSender = async (email) => {
 };
 
 export default otpSender;
+

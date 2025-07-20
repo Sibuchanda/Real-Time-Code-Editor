@@ -3,7 +3,9 @@ import "./App.css";
 import io from "socket.io-client";
 import Editor from "@monaco-editor/react";
 
-const socket = io("http://localhost:8000");
+const socket = io("http://localhost:8000", {
+  withCredentials: true,
+});
 
 const Dashboard = () => {
   const [joined, setJoined] = useState(false);

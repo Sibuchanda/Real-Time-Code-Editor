@@ -8,13 +8,15 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setconfirmPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigateTo = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const { data } = await axios.post(
-        "https://localhost:8000",
+        "http://localhost:8000/user/signup",
         {
           username,
           email,
@@ -29,7 +31,8 @@ function Signup() {
         }
       );
       toast.success(data.message || "User registered successfully");
-      navigateTo("/login");
+      localStorage.setItem("temp-email", email);
+      navigateTo("/verifyotp");
       setUserName("");
       setEmail("");
       setPassword("");
@@ -43,6 +46,8 @@ function Signup() {
       } else {
         toast.error(errorData || "User registration failed!!");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -62,6 +67,7 @@ function Signup() {
               placeholder="Enter your username"
               value={username}
               onChange={(e) => setUserName(e.target.value)}
+              disabled={isLoading}
             />
           </div>
 
@@ -74,6 +80,7 @@ function Signup() {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={isLoading}
             />
           </div>
 
@@ -86,6 +93,7 @@ function Signup() {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={isLoading}
             />
           </div>
 
@@ -98,14 +106,23 @@ function Signup() {
               placeholder="Enter confirm password"
               value={confirmpassword}
               onChange={(e) => setconfirmPassword(e.target.value)}
+              disabled={isLoading}
             />
           </div>
 
           <button
             type="submit"
-            className="w-full p-2 sm:p-3 bg-blue-600 text-white hover:bg-blue-900 duration-300 rounded-xl font-semibold text-sm sm:text-base cursor-pointer"
+            disabled={isLoading}
+            className="w-full p-2 sm:p-3 bg-blue-600 text-white hover:bg-blue-900 duration-300 rounded-xl font-semibold text-sm sm:text-base cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600"
           >
-            Signup
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                Signing up...
+              </div>
+            ) : (
+              "Signup"
+            )}
           </button>
 
           <p className="mt-3 sm:mt-4 text-center text-gray-600 text-sm">
