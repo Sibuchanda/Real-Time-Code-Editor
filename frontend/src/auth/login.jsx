@@ -18,7 +18,7 @@ function Login() {
 
       if (data.user) {
         toast.success(data.message || "User login successful");
-        window.location.href = "/test";
+        window.location.href = "/dashboard";
       } else {
         throw new Error("Token not found in response");
       }

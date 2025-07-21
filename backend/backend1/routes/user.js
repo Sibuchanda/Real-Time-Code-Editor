@@ -12,8 +12,9 @@ router.post("/signup", async (req, res) => {
     );
     res.status(response.status).send(response.data);
   } catch (err) {
-    console.log("Error while signup : ", err);
-    res.status(500).send({ error: "Signup failed" });
+    const statusCode = err.response?.status || 500;
+    const backendError = err.response?.data?.errors || ["Signup failed"];
+    res.status(statusCode).send({ errors: backendError });
   }
 });
 
@@ -38,8 +39,9 @@ router.post("/verifyotp", async (req, res) => {
     );
     res.status(response.status).send(response.data);
   } catch (err) {
-    console.log("Error occured while verifying OTP : ", err);
-    res.status(500).send({ error: "OTP verification failed" });
+    const statusCode = err.response?.status || 500;
+    const backendError = err.response?.data?.errors || ["OTP verification failed"];
+    res.status(statusCode).send({ errors: backendError });
   }
 });
 
@@ -52,7 +54,7 @@ router.post("/resendotp", async (req, res) => {
     res.status(response.status).send(response.data);
   } catch (err) {
     console.log("Resending OTP error : ", err);
-    res.status(500).send({ error: "Resend OTP failed" });
+    res.status(400).send({ error: "Resend OTP failed" });
   }
 });
 

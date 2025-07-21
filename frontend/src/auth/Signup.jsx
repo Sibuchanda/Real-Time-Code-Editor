@@ -38,21 +38,21 @@ function Signup() {
       setPassword("");
       setconfirmPassword("");
     } catch (err) {
-      console.log(err);
-      const errorData = err?.response?.data?.errors;
-
-      if (Array.isArray(errorData)) {
-        errorData.forEach((msg) => toast.error(msg));
-      } else {
-        toast.error(errorData || "User registration failed!!");
-      }
+      const backendErrors = err.response?.data?.errors;
+      const message = Array.isArray(backendErrors)
+        ? backendErrors.join(", ")
+        : backendErrors;
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cover bg-center px-2 sm:px-4 md:px-6" style={{ backgroundImage: 'url(/images/bg2.png)' }}>
+    <div
+      className="min-h-screen flex items-center justify-center bg-cover bg-center px-2 sm:px-4 md:px-6"
+      style={{ backgroundImage: "url(/images/bg2.png)" }}
+    >
       <div className="w-full max-w-[95%] sm:max-w-sm md:max-w-md lg:max-w-lg bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8">
         <h2 className="text-2xl sm:text-3xl font-semibold text-center mb-5 text-blue-800">
           Signup
@@ -60,7 +60,9 @@ function Signup() {
         <form onSubmit={handleRegister}>
           {/* Username */}
           <div className="mb-3 sm:mb-4">
-            <label className="block mb-1 sm:mb-2 font-semibold text-sm sm:text-base">Username</label>
+            <label className="block mb-1 sm:mb-2 font-semibold text-sm sm:text-base">
+              Username
+            </label>
             <input
               className="w-full p-2 sm:p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
               type="text"
@@ -73,7 +75,9 @@ function Signup() {
 
           {/* Email */}
           <div className="mb-3 sm:mb-4">
-            <label className="block mb-1 sm:mb-2 font-semibold text-sm sm:text-base">Email</label>
+            <label className="block mb-1 sm:mb-2 font-semibold text-sm sm:text-base">
+              Email
+            </label>
             <input
               className="w-full p-2 sm:p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
               type="email"
@@ -86,7 +90,9 @@ function Signup() {
 
           {/* Password */}
           <div className="mb-3 sm:mb-4">
-            <label className="block mb-1 sm:mb-2 font-semibold text-sm sm:text-base">Password</label>
+            <label className="block mb-1 sm:mb-2 font-semibold text-sm sm:text-base">
+              Password
+            </label>
             <input
               className="w-full p-2 sm:p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
               type="password"
@@ -99,7 +105,9 @@ function Signup() {
 
           {/* Confirm Password */}
           <div className="mb-3 sm:mb-4">
-            <label className="block mb-1 sm:mb-2 font-semibold text-sm sm:text-base">Confirm Password</label>
+            <label className="block mb-1 sm:mb-2 font-semibold text-sm sm:text-base">
+              Confirm Password
+            </label>
             <input
               className="w-full p-2 sm:p-3 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
               type="password"
@@ -127,7 +135,10 @@ function Signup() {
 
           <p className="mt-3 sm:mt-4 text-center text-gray-600 text-sm">
             Already have an account?{" "}
-            <Link to="/login" className="text-blue-600 hover:underline cursor-pointer">
+            <Link
+              to="/login"
+              className="text-blue-600 hover:underline cursor-pointer"
+            >
               Login
             </Link>
           </p>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./App.css";
+import '../App.css'
 import io from "socket.io-client";
 import Editor from "@monaco-editor/react";
 

@@ -37,22 +37,24 @@ export const signup = async (req, res) => {
       return res.status(400).json({ errors: ["All fields are required"] });
     }
     if (password === confirmpassword) {
-      // safe parsing the userSchema using 'Zod
       const validation = userSchema.safeParse({
         username,
         email,
         password,
         confirmpassword,
       });
+
       if (!validation.success) {
-        const errorMessage = validation.error.errors.map((err) => err.message);
+        const errorMessage = validation.error?.errors?.map(
+          (err) => err.message
+        );
         return res.status(400).json({ errors: errorMessage });
       }
+      //Verifying new user or not---
       const user = await User.findOne({ email });
       if (user) {
         return res.status(400).json({ errors: ["User already registered"] });
       }
-
       const hashPassword = await bcrypt.hash(password, 10);
       const tempUserData = JSON.stringify({
         username,
@@ -60,7 +62,6 @@ export const signup = async (req, res) => {
         password: hashPassword,
       });
       await redisClient.set(`temp-user:${email}`, tempUserData, { EX: 300 }); // store for 5 minutes
-
       //---Generating OTP and Sending ----
       const otpResult = await otpSender(email);
       if (!otpResult.success) {
@@ -71,6 +72,10 @@ export const signup = async (req, res) => {
       return res
         .status(200)
         .json({ message: "OTP sent to your email. Please verify." });
+    } else {
+      res
+        .status(400)
+        .json({ errors: "Password and Confirm password should be same" });
     }
   } catch (err) {
     console.log(err);
@@ -98,7 +103,10 @@ export const login = async (req, res) => {
     //   message: "User logged in successfully",
     //   user: { username: user.username, token },
     // });
-    return res.status(200).json({message: "User Logged in successfully", user: { username: user.username}});
+    return res.status(200).json({
+      message: "User Logged in successfully",
+      user: { username: user.username },
+    });
   } catch (err) {
     console.log(err);
     res.status(400).json({ message: "Error occurred during UserLogin" });

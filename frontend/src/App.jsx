@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Signup from "./auth/Signup";
 import Login from "./auth/login";
 import Verifyotp from './auth/Verifyotp';
-import { Test } from "./dashboard/Test";
+import Dashboard from "./dashboard/Dashboard";
 
 
 import { ToastContainer } from "react-toastify";
@@ -28,8 +28,8 @@ function App() {
       element: <Verifyotp />,
     },
     {
-      path: "/test",
-      element: <Test />,
+      path: "/dashboard",
+      element: <Dashboard />,
     },
   ]);
 
