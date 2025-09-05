@@ -103,6 +103,14 @@ export const login = async (req, res) => {
     //   message: "User logged in successfully",
     //   user: { username: user.username, token },
     // });
+
+    const userData = JSON.stringify({
+      userId: user._id,
+      username: user.username,
+      email: user.email,
+    });
+    await redisClient.set(`user-details:${email}`, userData);
+
     return res.status(200).json({
       message: "User Logged in successfully",
       user: { username: user.username },
